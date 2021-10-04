@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +7,28 @@ using UnityEngine.EventSystems;
 public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
 	[SerializeField] private GameObject _connector;
-	[SerializeField] private Slot _subSlot; // TODO: ѕомен€ть зависимость на родительский слот
+	[SerializeField] private Slot _parentSlot;
 	[SerializeField] private int _layerOrder;
 	private Part _part;
-	private bool _canConnect;
+
+	private event Action UnconnectEvent;
+	private event Action ConnectEvent;
 
 	public bool IsEmpty => _part == null;
-	public bool CanConnect => _canConnect;
+	public bool CanConnect => IsEmpty && _connector.activeSelf;
+
+	private void OnEnable()
+	{
+		if (_parentSlot != null)
+		{
+			_parentSlot.UnconnectEvent += Unconnect;
+			_parentSlot.ConnectEvent += () => UpdateConnector();
+		}
+	}
 
 	public void OnDrop(PointerEventData eventData)
 	{
-		if (_canConnect && eventData.pointerDrag.TryGetComponent<Part>(out var part))
+		if (CanConnect && eventData.pointerDrag.TryGetComponent<Part>(out var part))
 		{
 			Connect(part);
 		}
@@ -30,6 +42,11 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 		}
 	}
 
+	internal void Damage()
+	{
+		Unconnect();
+	}
+
 	public void Connect(Part part)
 	{
 		_part = part;
@@ -37,9 +54,10 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 		part.Deactivate();
 		var partTransform = part.transform;
 		partTransform.SetParent(this.transform);
-		partTransform.localPosition = Vector3.zero;
 		partTransform.localRotation = Quaternion.identity;
+		partTransform.localPosition = part.ConnectorPosition.localPosition * -1;
 		UpdateConnector();
+		ConnectEvent?.Invoke();
 	}
 
 	public void Unconnect()
@@ -49,35 +67,25 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 			_part.transform.parent = null;
 			_part.Activate();
 			_part = null;
-			_subSlot?.Unconnect();
+			UpdateConnector();
+			UnconnectEvent?.Invoke();
+		}
+		else
+		{
 			UpdateConnector();
 		}
 	}
 
 	private bool UpdateConnector()
 	{
-		if (IsEmpty)
+		if (_parentSlot != null && _parentSlot.IsEmpty)
 		{
-			ShowConnector();
-			_subSlot?.HideConnector();
+			_connector.SetActive(false);
 		}
 		else
 		{
-			HideConnector();
-			_subSlot?.UpdateConnector();
+			_connector.SetActive(true);
 		}
-		return _canConnect;
-	}
-
-	private void ShowConnector()
-	{
-		_connector.SetActive(true);
-		_canConnect = true;
-	}
-
-	private void HideConnector()
-	{
-		_connector.SetActive(false);
-		_canConnect = false;
+		return _connector.activeSelf;
 	}
 }

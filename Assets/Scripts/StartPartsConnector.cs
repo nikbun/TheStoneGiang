@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class StartPartsConnector : MonoBehaviour
 {
-	// TODO: Выделить отдельный класс для работы со ссылками на все слоты
-	[SerializeField] private Slot _headSlot;
-	[SerializeField] private Slot _shoulderLSlot;
-	[SerializeField] private Slot _shoulderRSlot;
-	[SerializeField] private Slot _forearmLSlot;
-	[SerializeField] private Slot _forearmRSlot;
-	[SerializeField] private Slot _hipLSlot;
-	[SerializeField] private Slot _hipRSlot;
-	[SerializeField] private Slot _shinLSlot;
-	[SerializeField] private Slot _shinRSlot;
+	[SerializeField] private SlotFacade _slotFacade;
 	[Space]
 	[SerializeField] private Part _headPrefab;
 	[SerializeField] private Part _shoulderLPrefab;
@@ -27,14 +18,14 @@ public class StartPartsConnector : MonoBehaviour
 
 	private void Awake()
 	{
-		_headSlot.Connect(Instantiate(_headPrefab));
-		_shoulderLSlot.Connect(Instantiate(_shoulderLPrefab));
-		_shoulderRSlot.Connect(Instantiate(_shoulderRPrefab));
-		_forearmLSlot.Connect(Instantiate(_forearmLPrefab));
-		_forearmRSlot.Connect(Instantiate(_forearmRPrefab));
-		_hipLSlot.Connect(Instantiate(_hipLPrefab));
-		_hipRSlot.Connect(Instantiate(_hipRPrefab));
-		_shinLSlot.Connect(Instantiate(_shinLPrefab));
-		_shinRSlot.Connect(Instantiate(_shinRPrefab));
+		_slotFacade.Head.Connect(Instantiate(_headPrefab));
+		_slotFacade.ShoulderL.Connect(Instantiate(_shoulderLPrefab));
+		_slotFacade.ShoulderR.Connect(Instantiate(_shoulderRPrefab));
+		_slotFacade.ForearmL.Connect(Instantiate(_forearmLPrefab));
+		_slotFacade.ForearmR.Connect(Instantiate(_forearmRPrefab));
+		_slotFacade.HipL.Connect(Instantiate(_hipLPrefab));
+		_slotFacade.HipR.Connect(Instantiate(_hipRPrefab));
+		_slotFacade.ShinL.Connect(Instantiate(_shinLPrefab));
+		_slotFacade.ShinR.Connect(Instantiate(_shinRPrefab));
 	}
 }

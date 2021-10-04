@@ -46,3 +46,6 @@ TagManager:
   - name: Giant
     uniqueID: 2817125919
     locked: 0
+  - name: Weapons
+    uniqueID: 519378705
+    locked: 0

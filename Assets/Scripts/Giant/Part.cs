@@ -9,8 +9,11 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 	private const int STANDARD_LAYER_ORDER = 100;
 
 	[SerializeField] private SpriteRenderer _spriteRenderer;
+	[SerializeField] private Transform _connector;
 	private Collider2D _colider;
 	private Rigidbody2D _rigidbody;
+
+	public Transform ConnectorPosition => _connector;
 
 	private void Awake()
 	{
@@ -26,8 +29,8 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 			{
 				if (slot.CanConnect)
 				{
-					transform.position = item.transform.position;
 					transform.rotation = item.transform.rotation;
+					transform.position = item.transform.position - ConnectorPosition.localPosition.magnitude * transform.localScale.x * transform.up;
 					return;
 				}
 			}
@@ -74,5 +77,6 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 		_rigidbody.isKinematic = true;
 		_colider.enabled = false;
 		_rigidbody.velocity = Vector2.zero;
+		_rigidbody.angularVelocity = 0f;
 	}
 }

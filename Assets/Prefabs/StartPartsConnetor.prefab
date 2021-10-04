@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6747162023225599726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6747162023225599724}
+  - component: {fileID: 6747162023225599727}
+  m_Layer: 0
+  m_Name: StartPartsConnetor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6747162023225599724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6747162023225599726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.48943204, y: 0.5817893, z: -1.3571513}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6747162023225599727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6747162023225599726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5858d465a05d6be47bf294772a7b91d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slotFacade: {fileID: 0}
+  _headPrefab: {fileID: 7271607083131242930, guid: 1054eaf1183ca724e9944967d3cb3483, type: 3}
+  _shoulderLPrefab: {fileID: 6095766430007310328, guid: c7a558f56f941464690d0042068cdac4, type: 3}
+  _shoulderRPrefab: {fileID: 6095766430007310328, guid: 83c978ebeaf8a1849b6f2ae0dbb596ec, type: 3}
+  _forearmLPrefab: {fileID: 8127040541373233302, guid: be29de8bc61fb7840abad18a0e511436, type: 3}
+  _forearmRPrefab: {fileID: 8127040541373233302, guid: bce63f25894e16642bbdd4887b70b56d, type: 3}
+  _hipLPrefab: {fileID: 3434426689548816672, guid: a7268b3a59aa91c45ac8050b01a7d457, type: 3}
+  _hipRPrefab: {fileID: 3434426689548816672, guid: 30150ee69d2e55e43a3b953c9d8a76c1, type: 3}
+  _shinLPrefab: {fileID: 8708081702857743249, guid: 0e176289a82e589459a7b91195fe97ed, type: 3}
+  _shinRPrefab: {fileID: 8708081702857743249, guid: 8686dbd272987354d9cfbd9a9e6408ec, type: 3}
