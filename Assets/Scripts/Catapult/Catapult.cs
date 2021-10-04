@@ -28,6 +28,6 @@ public class Catapult : MonoBehaviour
 	private void LaunchProjectile()
 	{
 		var projectile = Instantiate(_projectileSample, _launchPosition.position, Quaternion.identity);
-		projectile.Launch(_giant.Slots.GetRandomSlot().transform.position);
+		projectile.LaunchToSlot(_giant.Slots.GetRandomSlot());
 	}
 }

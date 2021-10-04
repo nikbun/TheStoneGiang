@@ -8,11 +8,18 @@ public class Projectile : MonoBehaviour
 	[SerializeField] private int _damageCount = 25;
 	[SerializeField] private float _destroyTime = 10;
 	private Rigidbody2D _rigidbody;
+	private Slot _targetSlot;
 
 	private void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
 		Destroy(this.gameObject, _destroyTime);
+	}
+
+	public void LaunchToSlot(Slot slot)
+	{
+		_targetSlot = slot;
+		Launch(_targetSlot.transform.position);
 	}
 
 	public void Launch(Vector2 target)
@@ -30,10 +37,21 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.TryGetComponent<IDamagable>(out var damagable) && damagable.CanDamage())
+		if (_targetSlot != null)
 		{
-			damagable.GetDamage(_damageCount);
-			Destroy(this.gameObject);
+			if (collision.gameObject == _targetSlot.gameObject && _targetSlot.CanDamage())
+			{
+				_targetSlot.GetDamage(_damageCount);
+				Destroy(this.gameObject);
+			}
+		}
+		else
+		{
+			if (collision.TryGetComponent<IDamagable>(out var damagable) && damagable.CanDamage())
+			{
+				damagable.GetDamage(_damageCount);
+				Destroy(this.gameObject);
+			}
 		}
 	}
 }
