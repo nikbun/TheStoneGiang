@@ -41,7 +41,7 @@ public class Projectile : MonoBehaviour
 		{
 			if (collision.gameObject == _targetSlot.gameObject && _targetSlot.CanDamage())
 			{
-				_targetSlot.GetDamage(_damageCount);
+				_targetSlot.Damage(_damageCount);
 				Destroy(this.gameObject);
 			}
 		}
@@ -49,7 +49,7 @@ public class Projectile : MonoBehaviour
 		{
 			if (collision.TryGetComponent<IDamagable>(out var damagable) && damagable.CanDamage())
 			{
-				damagable.GetDamage(_damageCount);
+				damagable.Damage(_damageCount);
 				Destroy(this.gameObject);
 			}
 		}

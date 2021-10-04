@@ -51,6 +51,10 @@ public class SlotFacade : MonoBehaviour
 
 	public List<Slot> AllFullSlots => AllSlots.Where(s => !s.IsEmpty).ToList();
 
+	public List<Slot> AllEmptySlots => AllSlots.Where(s => s.IsEmpty).ToList();
+
+	public List<Slot> AllDamagedSlots => AllSlots.Where(s => !s.IsEmpty && !s.IsFullHealth).ToList();
+
 	public Slot GetRandomSlot()
 	{
 		return AllSlots[Random.Range(0, AllSlots.Count)];

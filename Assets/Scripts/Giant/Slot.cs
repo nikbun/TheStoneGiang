@@ -9,11 +9,14 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagabl
 	[SerializeField] private GameObject _connector;
 	[SerializeField] private Slot _parentSlot;
 	[SerializeField] private int _layerOrder;
+	[Range(0f,1f)]
+	[SerializeField] private float _percentOfFallPartAtDamage = 0.2f;
 	private Part _part;
 
 	private event Action UnconnectEvent;
 	private event Action ConnectEvent;
 
+	public bool IsFullHealth => _part.IsFullHealth;
 	public bool IsEmpty => _part == null;
 	public bool CanConnect => IsEmpty && _connector.activeSelf;
 
@@ -93,9 +96,18 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagabl
 		return _connector.activeSelf;
 	}
 
-	public void GetDamage(int damage)
+	public void Heal(int heal)
 	{
-		_part.GetDamage(damage);
+		_part.Heal(heal);
+	}
+
+	public void Damage(int damage)
+	{
+		_part.Damage(damage);
+		if (_percentOfFallPartAtDamage >= UnityEngine.Random.Range(0f, 1f))
+		{
+			Unconnect();
+		}
 	}
 
 	public bool CanDamage()

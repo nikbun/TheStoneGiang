@@ -11,7 +11,7 @@ public class ButtonCooldown : MonoBehaviour
 	[SerializeField] private float _cooldownTime;
 	private float _cooldownTimer;
 
-	private event Action OnClickEvent;
+	public event Action OnClickEvent;
 
 	private void Awake()
 	{

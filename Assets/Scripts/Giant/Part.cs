@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDamagable, IPointerEnterHandler, IPointerExitHandler
@@ -19,7 +18,13 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
 	public event Action OnDestoyEvent;
 
+	public bool IsFullHealth => _health.IsFull;
 	public Transform ConnectorPosition => _connector;
+
+	public void Initialize(int maxHealth)
+	{
+		_health.Initialize(maxHealth);
+	} 
 
 	private void Awake()
 	{
@@ -99,9 +104,14 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 		_rigidbody.angularVelocity = 0f;
 	}
 
-	public void GetDamage(int damage)
+	public void Damage(int damage)
 	{
-		_health.GetDamage(damage);
+		_health.Damage(damage);
+	}
+
+	public void Heal(int heal)
+	{
+		_health.Heal(heal);
 	}
 
 	private void DestroySelf()

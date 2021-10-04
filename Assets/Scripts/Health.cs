@@ -12,15 +12,22 @@ public class Health : MonoBehaviour
 	public event Action HealthUpdatedEvent;
 	public event Action HealthOutEvent;
 
+	public bool IsFull => HealthCount == MaxHealthCount;
 	public int MaxHealthCount => _maxHealth;
 	public int HealthCount => _health;
+
+	public void Initialize(int maxHealth)
+	{
+		_maxHealth = maxHealth;
+		_health = _maxHealth;
+	}
 
 	private void Awake()
 	{
 		_health = _maxHealth;
 	}
 
-	public void GetDamage(int damage)
+	public void Damage(int damage)
 	{
 		if (damage < 0)
 		{
@@ -34,7 +41,7 @@ public class Health : MonoBehaviour
 		HealthUpdatedEvent?.Invoke();
 	}
 
-	public void GetHeal(int healing)
+	public void Heal(int healing)
 	{
 		if (healing < 0)
 		{

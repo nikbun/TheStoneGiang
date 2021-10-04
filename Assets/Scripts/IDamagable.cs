@@ -1,5 +1,5 @@
 ﻿public interface IDamagable
 {
 	bool CanDamage();
-	void GetDamage(int damage);
+	void Damage(int damage);
 }
