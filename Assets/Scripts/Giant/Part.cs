@@ -1,17 +1,21 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
-public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDamagable
 {
 	private const int STANDARD_LAYER_ORDER = 100;
 
+	[SerializeField] private Health _health;
 	[SerializeField] private SpriteRenderer _spriteRenderer;
 	[SerializeField] private Transform _connector;
 	private Collider2D _colider;
 	private Rigidbody2D _rigidbody;
+
+	public event Action OnDestoyEvent;
 
 	public Transform ConnectorPosition => _connector;
 
@@ -19,6 +23,17 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 	{
 		_colider = GetComponent<Collider2D>();
 		_rigidbody = GetComponent<Rigidbody2D>();
+
+	}
+
+	private void OnEnable()
+	{
+		_health.HealthOutEvent += DestroySelf;
+	}
+
+	private void OnDisable()
+	{
+		_health.HealthOutEvent -= DestroySelf;
 	}
 
 	public void OnDrag(PointerEventData eventData)
@@ -78,5 +93,21 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 		_colider.enabled = false;
 		_rigidbody.velocity = Vector2.zero;
 		_rigidbody.angularVelocity = 0f;
+	}
+
+	public void GetDamage(int damage)
+	{
+		_health.GetDamage(damage);
+	}
+
+	private void DestroySelf()
+	{
+		OnDestoyEvent?.Invoke();
+		Destroy(this.gameObject);
+	}
+
+	public bool CanDamage()
+	{
+		return true;
 	}
 }

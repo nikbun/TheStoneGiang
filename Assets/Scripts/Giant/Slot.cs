@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
+public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagable
 {
 	[SerializeField] private GameObject _connector;
 	[SerializeField] private Slot _parentSlot;
@@ -42,20 +42,16 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 		}
 	}
 
-	internal void Damage()
-	{
-		Unconnect();
-	}
-
 	public void Connect(Part part)
 	{
 		_part = part;
+		_part.OnDestoyEvent += ClearPart;
 		_part.SetLayerOrder(_layerOrder);
-		part.Deactivate();
-		var partTransform = part.transform;
+		_part.Deactivate();
+		var partTransform = _part.transform;
 		partTransform.SetParent(this.transform);
 		partTransform.localRotation = Quaternion.identity;
-		partTransform.localPosition = part.ConnectorPosition.localPosition * -1;
+		partTransform.localPosition = _part.ConnectorPosition.localPosition * -1;
 		UpdateConnector();
 		ConnectEvent?.Invoke();
 	}
@@ -64,6 +60,7 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 	{
 		if (!IsEmpty)
 		{
+			_part.OnDestoyEvent -= ClearPart;
 			_part.transform.parent = null;
 			_part.Activate();
 			_part = null;
@@ -74,6 +71,13 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 		{
 			UpdateConnector();
 		}
+	}
+
+	private void ClearPart()
+	{
+		_part = null;
+		UpdateConnector();
+		UnconnectEvent?.Invoke();
 	}
 
 	private bool UpdateConnector()
@@ -87,5 +91,15 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler
 			_connector.SetActive(true);
 		}
 		return _connector.activeSelf;
+	}
+
+	public void GetDamage(int damage)
+	{
+		_part.GetDamage(damage);
+	}
+
+	public bool CanDamage()
+	{
+		return !IsEmpty;
 	}
 }

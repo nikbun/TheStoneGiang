@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class Projectile : MonoBehaviour
 {
+	[SerializeField] private int _damageCount = 25;
 	[SerializeField] private float _destroyTime = 10;
 	private Rigidbody2D _rigidbody;
 
@@ -29,9 +30,9 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.TryGetComponent<Slot>(out var slot) && !slot.IsEmpty)
+		if (collision.TryGetComponent<IDamagable>(out var damagable) && damagable.CanDamage())
 		{
-			slot.Damage();
+			damagable.GetDamage(_damageCount);
 			Destroy(this.gameObject);
 		}
 	}
