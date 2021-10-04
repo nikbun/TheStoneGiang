@@ -192,7 +192,7 @@ MonoBehaviour:
   _giant: {fileID: 0}
   _projectileSample: {fileID: 5826633082652923676}
   _launchPosition: {fileID: 5826633081421738237}
-  _launchFrequency: 30
+  _launchFrequency: 15
 --- !u!1 &5826633082421114744
 GameObject:
   m_ObjectHideFlags: 0

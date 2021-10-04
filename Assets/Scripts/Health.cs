@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
 	[SerializeField] private int _maxHealth = 100;
 	private int _health;
 
+	public event Action HealthUpdatedEvent;
 	public event Action HealthOutEvent;
 
 	public int MaxHealthCount => _maxHealth;
@@ -30,6 +31,7 @@ public class Health : MonoBehaviour
 		{
 			HealthOutEvent?.Invoke();
 		}
+		HealthUpdatedEvent?.Invoke();
 	}
 
 	public void GetHeal(int healing)
@@ -39,5 +41,6 @@ public class Health : MonoBehaviour
 			throw new Exception($"Healing cannot be negative. Current healing - {healing}");
 		}
 		_health = Mathf.Min(_health + healing, _maxHealth);
+		HealthUpdatedEvent?.Invoke();
 	}
 }

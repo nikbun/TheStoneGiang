@@ -5,15 +5,17 @@ using UnityEngine.EventSystems;
 using Zenject;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
-public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDamagable
+public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IDamagable, IPointerEnterHandler, IPointerExitHandler
 {
 	private const int STANDARD_LAYER_ORDER = 100;
 
 	[SerializeField] private Health _health;
 	[SerializeField] private SpriteRenderer _spriteRenderer;
 	[SerializeField] private Transform _connector;
+	[SerializeField] private DamageViewer _damageViewer;
 	private Collider2D _colider;
 	private Rigidbody2D _rigidbody;
+	private UI _ui;
 
 	public event Action OnDestoyEvent;
 
@@ -21,8 +23,10 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
 	private void Awake()
 	{
+		_damageViewer.Initialize(_health, _spriteRenderer);
 		_colider = GetComponent<Collider2D>();
 		_rigidbody = GetComponent<Rigidbody2D>();
+		_ui = FindObjectOfType<UI>();
 
 	}
 
@@ -109,5 +113,37 @@ public class Part : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 	public bool CanDamage()
 	{
 		return true;
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		_ui.Health.Show(_health);
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		_ui.Health.Hide();
+	}
+}
+
+[Serializable]
+public class DamageViewer
+{
+	[SerializeField] private Color _normalColor;
+	[SerializeField] private Color _damagedColor;
+	private Health _health;
+	private SpriteRenderer _spriteRenderer;
+
+	public void Initialize(Health health, SpriteRenderer spriteRenderer)
+	{
+		_health = health;
+		_spriteRenderer = spriteRenderer;
+		_health.HealthUpdatedEvent += UpdateColor;
+	}
+
+	private void UpdateColor()
+	{
+		float percent = (float)_health.HealthCount / (float)_health.MaxHealthCount;
+		_spriteRenderer.color = Color.Lerp(_damagedColor, _normalColor, percent);
 	}
 }

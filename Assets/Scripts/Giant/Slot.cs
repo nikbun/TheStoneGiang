@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagable
+public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagable, IPointerEnterHandler, IPointerExitHandler
 {
 	[SerializeField] private GameObject _connector;
 	[SerializeField] private Slot _parentSlot;
@@ -101,5 +101,21 @@ public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler, IDamagabl
 	public bool CanDamage()
 	{
 		return !IsEmpty;
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		if (!IsEmpty && !eventData.dragging)
+		{
+			_part.OnPointerEnter(eventData);
+		}
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		if (!IsEmpty)
+		{
+			_part.OnPointerExit(eventData);
+		}
 	}
 }
