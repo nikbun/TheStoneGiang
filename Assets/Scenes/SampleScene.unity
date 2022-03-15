@@ -197,8 +197,7 @@ MonoBehaviour:
 
     Thank you for playing!
 
-    (Exit - "Alt + F4" Restart -
-    "R")'
+    (Restart - "R")'
 --- !u!222 &42324847
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2063,8 +2062,6 @@ MonoBehaviour:
   _portal: {fileID: 1344427638}
   _minHeal: 1
   _maxHeal: 50
-  _minHealAll: 1
-  _maxHealAll: 25
 --- !u!1 &1023639746
 GameObject:
   m_ObjectHideFlags: 3
@@ -3354,6 +3351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -3980,7 +3978,7 @@ MonoBehaviour:
     - Giant
     must be whole to walk.
 
-    - "R" - Restart,       "Alt + F4" - Exit'
+    - "R" - Restart'
 --- !u!222 &2136076116
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4798,7 +4796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5195799361779096879, guid: eae063aadd49f0648a855bf13939cc31, type: 3}
       propertyPath: _cooldownTime
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5829485308476330457, guid: eae063aadd49f0648a855bf13939cc31, type: 3}
       propertyPath: _cooldownTime
